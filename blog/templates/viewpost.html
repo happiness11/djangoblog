@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-2 col-sm-3 text-center">
             <a class="story-img" href="#">
-                <img src="http://via.placeholder.com/100x100"
+                <img src="{{MEDIA_URL}}{{request.user.profile.image}}"
                      style="width:100px; height: 100px; background-color: #12ABB2; color: #ffffff;" class="img-circle">
             </a>
         </div>
@@ -13,12 +13,12 @@
             <div class="row">
                 <div class="col-xs-9">
                     {% if post.image %}
-                        <img src="#">
+                        <img src="{{MEDIA_URL}}{{post.image}}" height=250px>
                     {% endif %}
                     <p>{{ post.content }}</p>
-                    <button class="btn btn-default" onclick="location.href='{% url 'index' %}'">Back To Blog</button>
+                    <button class="btn btn-default" onclick="location.href='{% url 'home' %}'">Back To Blog</button>
                     <button class="btn btn-default" onclick="location.href='{% url 'editpost' post.id %}'">Edit</button>
-                    <p>{{ post.published_date }}</p>
+                    <p>{{ post.published_date }}| Views {{ post.views }}</p>
                 </div>
             </div>
         </div>

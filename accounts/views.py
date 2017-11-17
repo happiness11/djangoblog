@@ -13,7 +13,7 @@ def get_index(request):
 def logout(request):
     auth.logout(request)
     messages.success(request, 'You have successfully logged out')
-    return redirect(blogposts)
+    return redirect(reverse('home'))
     
     
 def login(request):
