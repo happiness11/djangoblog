@@ -53,7 +53,7 @@ def register(request):
                                      password=form.cleaned_data['password1'])
              if user is not None:
                 auth.login(request, user)
-                return redirect(get_index)
+                return redirect(reverse('home'))
     else:
         form = UserRegistrationForm()
     
