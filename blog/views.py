@@ -1,8 +1,9 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from.models import Post
+from.models import Post, Comment
 from django.contrib.auth.decorators import login_required
-from.forms import BlogPostForm
+from.forms import BlogPostForm, BlogCommentForm
 from django.utils import timezone
+
 
 # Create your views here.
 def blogposts(request):
@@ -10,11 +11,11 @@ def blogposts(request):
     return render(request,"blogposts.html", {'posts':posts})
     
 def viewpost(request, id):
-    post = get_object_or_404(Post, pk =id)
-    # clock up the number of post views
-    post.views += 1 
-    post.save()
-    return render(request, "viewpost.html", {'post':post})
+    this_post = get_object_or_404(Post, pk=id)
+    comments = Comment.objects.filter(post=this_post)
+    form = BlogCommentForm()
+    return render(request, "viewpost.html", {'post': this_post, 'comments': comments, 'form': form})
+
     
 @login_required
 def newpost(request):
@@ -45,8 +46,16 @@ def editpost(request, id):
     return render (request, 'blogpostform.html', {'form':form})
     
     
-# def blogposts(request, id):
-#     post  = get_object_or_404(Post, pk=id)
-#     post.views += 1 # clock up the number of post views
-#     post.save()
-#     return render(request, "viewpost.html",{'post': post})
+
+
+def addcomment(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    form = BlogCommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.author = request.user
+        comment.post = post
+        comment.save()
+        return redirect('viewpost', post_id)
+            
+    

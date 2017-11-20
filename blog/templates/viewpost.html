@@ -21,7 +21,10 @@
                     <p>{{ post.published_date }}| <strong>Views</strong> {{ post.views }}| <strong>Tag</strong> {{ post.tag }}</p>
                       
                 </div>
+           
             </div>
+            <hr>
+        {% include '_comments.html' %}
         </div>
     </div>
 {% endblock %}
